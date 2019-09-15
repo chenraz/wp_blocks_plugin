@@ -9,7 +9,8 @@
 import './style.scss';
 import './editor.scss';
 
-import {Block} from '@tilnet/react-components';
+// import {Block} from '@tilnet/react-components';
+import Block from './local-block';
 
 
 const { __ } = wp.i18n; // Import __() from wp.i18n

@@ -1,52 +1,28 @@
 /**
- * #.# Common SCSS
- *
- * Can include things like variables and mixins
- * that are used across the project.
-*/
-/**
  * #.# Editor Styles
  *
  * CSS for just Backend enqueued after style.scss
  * which makes it higher in priority.
  */
-.wp-block-cgb-block-tilnet-blocks {
-  background: #bada55;
-  border: 0.2rem solid #292929;
-  color: #292929;
-  margin: 0 auto;
-  max-width: 740px;
-  padding: 2rem; }
-/**
- * #.# Common SCSS
- *
- * Can include things like variables and mixins
- * that are used across the project.
-*/
-/**
- * #.# Editor Styles
- *
- * CSS for just Backend enqueued after style.scss
- * which makes it higher in priority.
- */
-.wellcome-block {
+
+ .wellcome-block {
   position: relative;
   width: 100%;
   background: yellow;
-  padding-bottom: 56.25%; }
-
+  padding-bottom: 56.25%;
+}
 .image-wrap {
   position: absolute;
   width: 45%;
   left: 35%;
-  bottom: 0; }
-
+  bottom: 0;
+}
 .logo-wrap {
   position: absolute;
   top: 37%;
   left: 11%;
-  width: 34.3%; }
-
+  width: 34.3%;
+}
 .content {
   position: absolute;
   display: inline-block;
@@ -57,8 +33,9 @@
   height: 28%;
   direction: rtl;
   top: 22%;
-  left: 68%; }
-
+  left: 68%;    
+}
 .inner-content {
   padding: 18px;
-  line-height: 1; }
+  line-height: 1;
+}

@@ -9,4 +9,10 @@
  * Webpack is compiling as the input file.
  */
 
-import './block/block.js';
+import './blocks/block/block.js';
+import './blocks/wellcome';
+import './blocks/blocks-slider';
+import './blocks/posts-slider';
+import './blocks/portfolio';
+
+import './wp-core/index';

@@ -64,7 +64,7 @@ function tilnet_blocks_cgb_block_assets() { // phpcs:ignore
 	 * @since 1.16.0
 	 */
 	register_block_type(
-		'cgb/block-tilnet-blocks', array(
+		'til/blocks-slider', array(
 			// Enqueue blocks.style.build.css on both frontend & backend.
 			'style'         => 'tilnet_blocks-cgb-style-css',
 			// Enqueue blocks.build.js in the editor only.
