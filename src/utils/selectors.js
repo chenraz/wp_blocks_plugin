@@ -5,7 +5,7 @@
  /**
   * Externals
   */
-import { reduce, isUndefined } from 'lodash';
+import { reduce, filter } from 'lodash';
 const { getBlockTypes, createBlock } = wp.blocks;
 const { __ } = wp.i18n;
 
@@ -74,3 +74,17 @@ export const getPostsBlocks = (posts,blockType) => reduce (
 	}),
 	[]
 );
+
+/**
+ * Find block that match name and className
+ * 
+ * @param {*} blocks 
+ * @param {*} blockName 
+ * @param {*} className 
+ */
+export const getBlockByClassName = (blocks,blockName,className) => filter(blocks,(block)=>{
+	return (
+		block.name == blockName
+		&& block.attributes.className && block.attributes.className.includes(className)
+	);
+});

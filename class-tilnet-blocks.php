@@ -126,7 +126,8 @@ if (!class_exists('Tilnet_Blocks')) :
         public static function load_text_domain ()
         {
             load_plugin_textdomain('tilnet-blocks', false, basename( dirname( __FILE__ ) ) . '/lang');
-        }        
+        }
+        
         
      }
    

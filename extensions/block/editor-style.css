@@ -1,0 +1,21 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 20 Sep 2019, 8:49:55
+    Author     : chen
+*/
+
+button.components-color-palette__item[aria-label="Color: Radial Yellow"]:not(.is-active),
+span.component-color-indicator[aria-label="(current background color: Radial Yellow)"]{
+    color: transparent !important;
+    background: radial-gradient(#fedd56, #fcc73a)!important;
+}  
+button.components-color-palette__item[aria-label="Color: Radial Blue"]:not(.is-active),
+span.component-color-indicator[aria-label="(current background color: Radial Blue)"]{
+    color: transparent !important;
+    background: radial-gradient(#02456d, #023e62)!important;
+}  
+

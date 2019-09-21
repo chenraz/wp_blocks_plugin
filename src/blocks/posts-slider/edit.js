@@ -7,14 +7,14 @@
  * External dependencies
  */
 
-import { Fragment } from 'react';
+import { Fragment,useRef } from 'react';
 import { isUndefined, isEmpty, pickBy,reduce } from 'lodash';
 // import classnames from 'classnames';
 
 import Slider from '../../local-react-components/elements/slider';
 import Post from '../../local-react-components/elements/post';
 
-const { Component } = wp.element;
+const { Component, createRef } = wp.element;
 const {
 	PanelBody,
 	Placeholder,
@@ -29,10 +29,12 @@ const { __ } = wp.i18n;
 const {
 	InspectorControls,
 	BlockControls,
+	withColors,
 } = wp.blockEditor;
 const { withSelect } = wp.data;
 const {getSaveElement} = wp.blocks;
 const { compose } = wp.compose;
+const {PanelColorSettings} = wp.editor;
 
 /**
  * Internal Dependencies
@@ -50,7 +52,7 @@ import {
 } from '../../utils';
 
 import {getPostsTermsIds,getPostsTermsList} from '../../local-react-components/utils/selectors';
-
+// import Post from '../../local-react-components/elements/post';
 const Block = ({post}) => {
 	
 	const blockObj = post.blocks && post.blocks.length 
@@ -68,6 +70,7 @@ const Block = ({post}) => {
 class PostSliderEdit extends Component {
 	constructor() {
 		super( ...arguments );
+		this.exerptEl = createRef();		
 	}
 
 	render() {
@@ -78,11 +81,16 @@ class PostSliderEdit extends Component {
 			sliderPosts,
 			postsTypesList,
 			blocksTypesList,
-			taxonomiesList 
+			taxonomiesList,
+			textColor,
+			setTextColor,
+			accentColor,
+			setAccentColor,
 		} = this.props;
 
 		const { 
 			contentLayout,
+			showTitle,
 			showExcerpt,
 			showThumbnail,
 			displayPostDate, 
@@ -95,7 +103,10 @@ class PostSliderEdit extends Component {
 		} = attributes;
 		
 		const hasPosts = Array.isArray( sliderPosts ) && sliderPosts.length;
-		
+
+		console.log ('set setTextColor',setTextColor);
+		// const exerptEl = React.createRef();
+
 		const displayPosts = sliderPosts.length > postsToShow ?
 			sliderPosts.slice( 0, postsToShow ) :
 			sliderPosts;
@@ -133,10 +144,16 @@ class PostSliderEdit extends Component {
 				{ 'post' === contentLayout &&
 					<PanelBody title={ __( 'Content Settings' ) }>
 						<ToggleControl
+							label={ __( 'Display title' ) }
+							checked={ showTitle }
+							onChange={ ( value ) => setAttributes( { showTitle: value } ) }
+						/>						
+						<ToggleControl
 							label={ __( 'Display excerpt' ) }
 							checked={ showExcerpt }
 							onChange={ ( value ) => setAttributes( { showExcerpt: value } ) }
 						/>
+
 						<ToggleControl
 							label={ __( 'Display thumbnail' ) }
 							checked={ showThumbnail }
@@ -160,6 +177,27 @@ class PostSliderEdit extends Component {
 						/>
 					</PanelBody>
 				}
+
+				{showExcerpt && 
+					<PanelColorSettings
+						title={ __( 'Colors' ) }
+						initialOpen={ true }
+						colorSettings={ [ 
+							{
+								value: textColor.color,
+								onChange: setTextColor,
+								label: __( 'Text Color' ),
+							},
+							{
+								value: accentColor.color,
+								onChange: setAccentColor,
+								label: __( 'Accent Color' ),
+							}							
+
+							
+					 	] }
+					/>
+				}				
 
 				<PanelBody title={ __( 'Sorting and Filtering' ) }>
 					<QueryControls
@@ -196,9 +234,9 @@ class PostSliderEdit extends Component {
 				{ inspectorControls }
 				<BlockControls />
 
-				<Slider {...attributes} {...this.props}>
+				<Slider exerptEl={this.exerptEl} {...attributes} {...this.props}>
 					{'post' === contentLayout && sliderPosts &&
-						sliderPosts.map((post,i)=><Post key={i} {...{post:post,showExcerpt,showThumbnail}}/>)
+						sliderPosts.map((post,i)=><Post exerptEl={this.exerptEl} key={i} {...{post:post,showTitle,showExcerpt,showThumbnail}}/>)
 					}
 					{'blocks' === contentLayout && sliderPosts && sliderPosts.length &&
 						sliderPosts.map((post,i)=><Block key={i} post={post} />)
@@ -280,6 +318,7 @@ const EditFunc = compose([
 	withPostOptions,
 	withSliderPosts,
 	withMouseNavigation,
+	withColors( 'textColor','accentColor' ),
 ])( PostSliderEdit );
 
 export default EditFunc;

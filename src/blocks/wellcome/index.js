@@ -5,6 +5,9 @@
  * Simple block, renders and saves the same content without any interactivity.
  */
 
+import { Fragment } from 'react';
+
+
 //  Import CSS.
 import './style.scss';
 import './editor.scss';
@@ -12,9 +15,19 @@ import './editor.scss';
 import {Wellcome} from '@tilnet/react-components';
 import ImageUpload from '../../components/imageUpload';
 
-const {RichText} = wp.blockEditor;
+// const {RichText} = wp.blockEditor;
 const { __ } = wp.i18n; // Import __() from wp.i18n
 const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.blocks
+const { compose } = wp.compose;
+const {
+	RichText,
+	InspectorControls,
+	BlockControls,
+	withColors,
+} = wp.blockEditor;
+const {PanelBody} = wp.components;
+const {PanelColorSettings} = wp.editor;
+
 
 /**
  * Register: aa Gutenberg Block.
@@ -47,9 +60,9 @@ registerBlockType( 'til/wellcome', {
 		anchor: {
 			type: 'string',
 		},
-		bid: {
-			type: 'string',
-		},
+		// bid: {
+		// 	type: 'string',
+		// },
 		text: {
 			type: 'string',
 		},
@@ -61,7 +74,13 @@ registerBlockType( 'til/wellcome', {
 		},	
 		logo: {
 			type: 'string',
-		}	
+		},	
+		textColor: {
+			"type": "string"
+		}, 			
+		backgroundColor: {
+			"type": "string"
+		}, 		
 	},
 
 	/**
@@ -72,8 +91,16 @@ registerBlockType( 'til/wellcome', {
 	 *
 	 * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
 	 */
-	edit: ( props ) => {
-		const { attributes: { text,tagline,image,logo }, setAttributes, className } = props;
+	edit: compose([
+		withColors('backgroundColor','textColor')
+	])(( props ) => {
+		const { 
+			attributes: { text,tagline,image,logo }, 
+			setAttributes, 
+			// className, 
+			backgroundColor, setBackgroundColor,
+			textColor, setTextColor,
+		} = props;
 
 		console.log('edit : ' , props);
 
@@ -96,6 +123,28 @@ registerBlockType( 'til/wellcome', {
 		};			
 
 		return (
+			<Fragment>
+			<InspectorControls>
+				<PanelBody title={ __( 'Colors' ) }>
+					<PanelColorSettings
+						title={ __( 'Background color' ) }
+						initialOpen={ true }
+						colorSettings={ [ 
+							{
+								value: backgroundColor.color,
+								onChange: setBackgroundColor,
+								label: __( 'Background Color' ),
+							},
+							{
+								value: textColor.color,
+								onChange: setTextColor,
+								label: __( 'Text Color' ),
+							}							
+							
+						] }
+					/>					
+				</PanelBody>
+			</InspectorControls>				
 			<div className='wellcome-block'>
 				<div className='content'>
 					<div className='inner-content'>
@@ -132,9 +181,9 @@ registerBlockType( 'til/wellcome', {
 
 				</div>
 			</div>
-
+			</Fragment>
 		);
-	},
+	}),
 
 	/**
 	 * The save function defines the way in which the different attributes should be combined

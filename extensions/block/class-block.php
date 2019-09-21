@@ -29,11 +29,16 @@ if (!class_exists('\Tilnet\Block')) :
             
             // Assets
             add_action( 'init', [__CLASS__,'register_scripts'],5 );
+            add_action ('enqueue_block_editor_assets',[__CLASS__,'enqueue_styles']);
             
             // Blocks
+            add_action ('after_setup_theme',[__CLASS__,'set_color_palette'],1000);
+            
             add_action( 'init', [__CLASS__,'register_blocks'] );            
             add_action ('init',[__CLASS__,'register_blocks_style']);
+            
             add_filter( 'block_categories', [__CLASS__,'block_categories'] );
+            
             add_filter( 'block_parser_class', [__CLASS__,'block_parser_class']);
         }
         
@@ -42,6 +47,15 @@ if (!class_exists('\Tilnet\Block')) :
          */
         public static function register_scripts ()
         {
+            
+            // general editor style
+            wp_register_style (
+                'tilnet-blocks-editor-general',
+                plugins_url ('editor-style.css',__FILE__),
+                ['wp-editor'],
+                null
+            );
+            
             // Register block styles for both frontend + backend.
             wp_register_style(
                 'tilnet_blocks-cgb-style-css', 
@@ -67,6 +81,54 @@ if (!class_exists('\Tilnet\Block')) :
                 null 
             );  
         }
+        
+        /**
+         * 
+         */
+        public static function set_color_palette ()
+        {
+            add_theme_support( 'editor-color-palette', array(
+                array(
+                    'name'  => __( 'Almost Black', 'tilnet-blocks' ),
+                    'slug'  => 'almost_black',
+                    'color' => '#021420',
+               ),                
+                array(
+                    'name'  => __( 'Blue', 'tilnet-blocks' ),
+                    'slug'  => 'blue',
+                    'color'	=> '#03456d',
+                ),
+                array(
+                    'name'  => __( 'Yellow', 'tilnet-blocks' ),
+                    'slug'  => 'yellow',
+                    'color' => '#ffd820',
+                ),
+                array(
+                    'name'  => __( 'Almost White', 'tilnet-blocks' ),
+                    'slug'  => 'almost_white',
+                    'color' => '#e6eef2',
+               ),
+                array (
+                    'name'  => __( 'Radial Yellow', 'tilnet-blocks' ),
+                    'slug'  => 'radial_yellow',
+                    'color' => '#fcd03f',                    
+                ),
+                array (
+                    'name'  => __( 'Radial Blue', 'tilnet-blocks' ),
+                    'slug'  => 'radial_blue',
+                    'color' => '#02456d',                    
+                ),                
+            ) );
+        }           
+        
+        /**
+         * 
+         */
+        public static function enqueue_styles ()
+        {
+            wp_enqueue_style('tilnet-blocks-editor-general');
+            error_log ('enqueued');
+        }        
 
         /**
          * 
